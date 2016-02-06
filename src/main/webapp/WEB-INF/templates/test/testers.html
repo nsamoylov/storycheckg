@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!-- testers -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+    <h3 th:if="${isnew}" align="center">
+      <span th:include="#{new.create} :: [//div]" class="darkred">Create testers/groups/tests</span>
+    </h3>
+    <div class="listtable">
+      <h2 th:text="#{testers.tablename}">All your testers</h2>
+      <table>
+        <thead>
+          <tr>
+            <th th:text="#{tester.colfirst}">First Name</th>
+            <th th:text="#{tester.collast}">Last Name</th>
+            <th th:text="#{tester.colemail}">Email</th>
+            <th th:text="#{user.lang}">Language</th>
+            <th th:text="#{tester.rowgroups}">Test groups</th>
+            <th th:text="#{tester.rowtests}">Tests</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="t : ${testersall}" th:class="${tStat.even}?'pale-blue':'pale-green'">
+            <td th:text="${t.firstnameRead}">Nick</td>
+            <td th:text="${t.lastnameRead}">Samoylov</td>
+            <td><a th:href="@{/test/tester(id=${t.id})}"><span th:text="${t.email}">emailbox@home.com</span></a></td>
+            <td th:text="#{${t.language}}">English</td>
+            <td>
+              <span th:if="${testertestgroupsmap.get(t.id).size()== 0}"><span th:text="#{testgroups.no.such}"></span></span>
+              <span th:each="tg : ${testertestgroupsmap.get(t.id)}">
+                 <a th:href="@{/test/testgroup(id=${tg.id})}"><span th:text="${tg.name}">My Test group 1</span></a><br/>
+              </span>
+            </td>                        
+            <td>
+              <span th:if="${testertestsmap.get(t.id).size()== 0}"><span th:text="#{tests.no.such}"></span></span>
+              <span th:each="tst : ${testertestsmap.get(t.id)}">
+                 <a th:href="@{/test/test(id=${tst.id})}"><span th:text="${tst.name}">My Test 1</span></a><br/>
+              </span>
+            </td>                        
+          </tr>
+          <tr th:if="${testersall==null || testersall.size()==0}">
+            <td colspan="6"><span th:text="#{testers.no}">No testers</span></td>
+          </tr>
+          <tr th:remove="all" class="pale-blue">
+            <td>Jack</td>
+            <td>Blow</td>
+            <td>whatever@bell.com</td>
+            <td>English</td>
+            <td>Test group1</td>
+            <td>My Test</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br/>
+    <div align="center" >
+      <form action="#" th:action="@{/test/testeradd}" method="get"> 
+        <button type="submit" class="darkred" name="buttonValue" value="addyour" th:text="#{tester.add.your}">Add your tester</button>
+        <button type="submit" class="darkred" name="buttonValue" value="addindependent" th:text="#{tester.add.independent}">Add independent tester</button>
+      </form>    
+    </div>
+    <div th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+                                 http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                                 http://www.springframework.org/schema/security
+                                 http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+        
+    <!-- Authentication using a memory user list -->
+    <authentication-manager>
+        <authentication-provider>
+            <!--<user-service>-->
+                <!--<user name="admin" password="secret" authorities="ROLE_ADMIN,ROLE_USER" />-->
+                <!--<user name="user1" password="1111" authorities="ROLE_USER" />-->
+                <!-- user name="nsamoylov@hotmail.com" password="838021358f30fedd28d8f205bad6aa0a4f325fdb"(fe@tel) authorities="role.writer" /-->                
+            <!--</user-service>-->
+            <jdbc-user-service data-source-ref="dataSource"            
+                 users-by-username-query="select username, password, enabled from users where username=?" 
+		         authorities-by-username-query="select u.username, ur.role from users u, user_roles ur where u.id = ur.user_id and u.username =?  " />
+              	<password-encoder ref="passwordEncoder"/>
+        </authentication-provider>
+    </authentication-manager>
+  	<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder" />
+  	
+  	<!-- Uncomment the below bean defination if you want to encode all the passwords during the startup        		
+  	<beans:bean class="com.nicksamoylov.storycheck.utils.DbPasswordEncoder" init-method="secureDatabase" depends-on="dataSource">
+		<beans:property name="dataSource" ref="dataSource"/>
+		<beans:property name="passwordEncoder" ref="passwordEncoder"/>
+	</beans:bean>
+	--> 
+
+    <http auto-config="true" use-expressions="true">
+       <!-- Login pages -->
+       <form-login login-page="/login" authentication-failure-url="/login-error" />
+       <logout />
+       <!-- Security zones
+       <intercept-url pattern="/test/**" access="hasRole('ROLE_USER')" />
+       <intercept-url pattern="/shared/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
+        -->
+       <intercept-url pattern="/admin/**" access="hasRole('role.admin')" />
+   </http>
+    
+</beans:beans>

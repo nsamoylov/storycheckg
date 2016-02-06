@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<url>
+  <loc>http://www.storycheck.com/index?lang=ru</loc>
+</url>
+<url>
+  <loc>http://www.storycheck.com/index?lang=en</loc>
+</url>
+<url>
+  <loc>http://www.storycheck.com/user/blogs?lang=ru</loc>
+</url>
+<url>
+  <loc>http://www.storycheck.com/user/blogs?lang=en</loc>
+</url>
+<url>
+  <loc>http://www.storycheck.com/user/blogview?id=101</loc>
+</url>
+<url>
+  <loc>http://www.storycheck.com/user/blogview?id=103</loc>
+</url>
+<url>
+  <loc>http://www.storycheck.com/user/blogview?id=104</loc>
+</url>
+<url>
+  <loc>http://www.storycheck.com/user/blogview?id=105</loc>
+</url>
+<url>
+  <loc>http://www.storycheck.com/user/blogview?id=106</loc>
+</url>
+<url>
+  <loc>http://www.storycheck.com/user/blogview?id=107</loc>
+</url>
+<url>
+  <loc>http://www.storycheck.com/user/blogview?id=108</loc>
+</url>
+<url>
+  <loc>http://www.storycheck.com/user/blogview?id=109</loc>
+</url>
+<url>
+  <loc>http://www.storycheck.com/user/blogview?id=110</loc>
+</url>
+<url>
+  <loc>http://www.storycheck.com/user/blogview?id=111</loc>
+</url>
+</urlset>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration debug="false" xmlns:log4j="http://jakarta.apache.org/log4j/">
+   <appender name="fileAppender" class="org.apache.log4j.RollingFileAppender">
+      <param name="MaxFileSize" value="100KB" />
+      <param name="MaxBackupIndex" value="10" />
+      <param name="append" value="true"/>
+      <param name="file" value="../logs/storycheck.log"/>
+      <layout class="org.apache.log4j.PatternLayout">
+         <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{1}] %m%n"/>
+      </layout>
+   </appender>
+	
+	<logger name="com.nicksamoylov.storycheck">
+		<level value="debug" />
+        <appender-ref ref="fileAppender"/>
+	</logger>
+
+	<logger name="com.mchange" additivity="false">
+		<level value="info" />
+        <appender-ref ref="fileAppender"/>
+	</logger>
+
+	<logger name="org" additivity="false">
+		<level value="info" />
+        <appender-ref ref="fileAppender"/>
+	</logger>
+
+	<root>
+	  <priority value="debug" />
+      <appender-ref ref="fileAppender"/>
+	</root>
+
+</log4j:configuration>
+

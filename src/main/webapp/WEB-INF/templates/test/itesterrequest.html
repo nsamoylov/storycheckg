@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!-- itesterrequest -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+   <div class="listtable">
+      <h2 th:text="${request.title}">Title</h2>
+      <table>
+        <tbody>
+          <tr class="pale-blue">
+            <td th:text="${request.requestText}">Text of the request</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <form action="#" th:action="@{/test/itesteradd}" th:object="${testgroup}" method="post">
+      <input type="hidden" name="writerId" th:value="*{writerId}" />
+      <input type="hidden" name="id" th:value="${itesterId}" />
+      <div align="center" >
+         <button type="submit" class="darkred" name="buttonValue" value="addindependent" th:text="#{nav.add}">Add</button>
+	  </div>
+    </form>       
+    <div th:if="${iswriter}" th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+ </body>
+</html>

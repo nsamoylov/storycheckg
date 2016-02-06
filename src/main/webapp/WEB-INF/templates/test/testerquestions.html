@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!-- testerquestions -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+   <form action="#" th:action="@{/test/testeranswer}" th:object="${questions}" method="post">
+    <input type="hidden" name="testerToken" th:value="*{testerToken}" />
+    <input type="hidden" name="questionsToken" th:value="*{questionsToken}" />
+    <div class="listtable">
+      <h2 th:text="#{answer.please}">Please, answer the following questions:</h2>
+      <table>
+        <tbody>
+          <tr th:each="q : ${questions.questions}" th:class="${qStat.even}?'pale-blue':'pale-green'">
+            <td th:text="${q}">Question</td>
+            <td><span th:each="a : ${questions.getAnswerOptions(qStat.count)}">
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label th:text="${questions.getAnswerValue(qStat.count,aStat.count)}">Answer1</label>
+                   <input type="radio" th:if="${qStat.count==1}" th:field="*{answer1}" th:value="${questions.getAnswerKey(qStat.count,aStat.count)}"/>
+                   <input type="radio" th:if="${qStat.count==2}" th:field="*{answer2}" th:value="${questions.getAnswerKey(qStat.count,aStat.count)}"/>
+                   <input type="radio" th:if="${qStat.count==3}" th:field="*{answer3}" th:value="${questions.getAnswerKey(qStat.count,aStat.count)}"/>
+                </span>
+            </td>
+          </tr>
+          <tr class="pale-green">
+            <td th:text="#{comments}">Comments</td>
+            <td>
+              <textarea rows="5" cols="50" th:field="*{comments}" maxlength="1100">Comments</textarea>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br/>
+    <div th:if="${questions.testerToken}" align="center" >
+        <button type="submit" name="save" class="darkred" th:text="#{nav.save}">Save</button>    
+    </div>
+    <h3 th:unless="${questions.testerToken}" align="center" class="darkred" th:text="#{questions.readonly}" />
+   </form>
+  </body>
+</html>
+            

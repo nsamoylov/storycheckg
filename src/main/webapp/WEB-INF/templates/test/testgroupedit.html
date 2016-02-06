@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!-- testgroupedit -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+   <form action="#" th:action="@{/test/testgroupsave}" th:object="${testgroup}" method="post">
+    <input type="hidden" name="r" th:value="${r}" />
+    <input type="hidden" name="id" th:value="*{id}" />
+    <input type="hidden" name="writerId" th:value="*{writerId}" />
+    <div class="listtable">
+      <h2 th:text="${testgroup.id}?(#{testgroup.tablename}+' '+${testgroup.name}):#{testgroup.new}">Test group My Translation</h2>
+      <table>
+        <tbody>
+          <tr class="pale-blue">
+            <td th:text="#{testgroup.colname}">Group name</td>
+            <td><input type="text" th:field="*{name}" size="40" MAXLENGTH="64"/>
+                <span class="darkred" th:text="${#fields.hasErrors('name')}? ${#fields.errors('name')[0]}">Error</span>
+                <span class="darkred" th:text="${!#fields.hasErrors('name') &amp;&amp; (testgroup.name==null || testgroup.name.length()==0)}? #{required}">required</span>                
+            </td>
+          </tr>
+          <tr th:if="${testgroup.id}" class="pale-green" >
+            <td th:text="#{testgroup.coltests}">Tests it participates</td>
+            <td><span th:if="${teststestgroup.size()==0}"><span th:text="#{tests.no.such}">No tests</span></span>
+                <span th:each="t : ${teststestgroup}">
+                  <span th:text="${t.name}">My Test 1</span><br/>
+                </span>
+            </td>                        
+          </tr>
+        </tbody>
+      </table>
+      <br/>
+      <span class="darkred" th:if="${testgroup.testersId==null || testgroup.testersId.size()==0}" th:text="#{empty.testgroup.testersId}">required</span>                
+      <table>
+        <thead>
+          <tr>
+            <th th:text="#{nav.select}">Select</th>
+            <th th:text="#{testgroup.members.name}">Name</th>
+            <th th:text="#{tester.colemail}">Email</th>
+            <th th:text="#{user.lang}">Language</th>
+            <th th:text="#{tester.rowgroups}">Test groups</th>
+            <th th:text="#{tester.rowtests}">Tests</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="t : ${testersall}" th:class="${tStat.even}?'pale-blue':'pale-green'">
+            <td><input type="checkbox" th:field="*{testersId}" th:value="${t.id}"/></td>
+            <td th:text="${t.firstnameRead}+' '+${t.lastnameRead}">Nick Samoylov</td>
+            <td th:text="${t.email}">emailbox@home.com</td>
+            <td th:text="#{${t.language}}">English</td>
+            <td>
+              <span th:if="${testertestgroupsmap.get(t.id).size()== 0}"><span th:text="#{testgroups.no.such}"></span></span>
+              <span th:each="tg : ${testertestgroupsmap.get(t.id)}"><span th:text="${tg.name}">My Test group 1</span><br/></span>
+            </td>                        
+            <td>
+              <span th:if="${testertestsmap.get(t.id).size()== 0}"><span th:text="#{tests.no.such}"></span></span>
+              <span th:each="tst : ${testertestsmap.get(t.id)}"><span th:text="${tst.name}">My Test 1</span><br/></span>
+            </td>                        
+          </tr>
+          <tr th:if="${testersall==null || testersall.size()==0}">
+            <td colspan="6"><span th:text="#{testers.no}">No testers</span></td>
+          </tr>
+          <tr th:remove="all" class="pale-blue">
+            <td>Select</td>
+            <td>Jack Blow</td>
+            <td>whatever@bell.com</td>
+            <td>Group 1</td>
+            <td>Test 23</td>
+          </tr>
+        </tbody>
+      </table>    
+    </div>
+    <br/>
+    <div align="center" >
+        <button type="submit" name="save" class="darkred" th:text="#{nav.save}">Save</button>    
+    </div>
+   </form>
+    <div th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

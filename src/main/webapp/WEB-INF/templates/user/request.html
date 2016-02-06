@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!-- request -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+   <div class="listtable">
+      <h2 th:text="${request.title}">Title</h2>
+      <div th:if="${deleteUri}" th:include="fragment/common :: [//div[@id='confirmdelete']]"></div>
+      <table>
+        <tbody>
+          <tr class="pale-blue">
+            <td th:text="${request.requestText}" colspan="2">Text of the request</td>
+          </tr>
+          <tr class="pale-green">
+            <td th:text="#{request.coldatepublished}">Published date</td>
+            <td th:text="${request.createdDateString}">2013-Mar-01</td>
+           </tr>
+          <tr class="pale-blue" >
+            <td th:text="#{request.colpublishedfound}">Found since published</td>
+            <td th:text="${request.foundPublished}">10</td>
+          </tr>
+          <tr class="pale-green" >
+            <td th:text="#{request.colpublishedviewed}">Viewed since published</td>
+            <td th:text="${request.viewedPublished}">2</td>
+          </tr>
+          <tr class="pale-blue">
+            <td th:text="#{request.colpublishedcontacts}">Contacts since published</td>
+            <td th:text="${request.contactsPublished}">3</td>
+          </tr>
+          <tr class="pale-green" >
+            <td th:text="#{request.coldatemodified}">Modified date</td>
+            <td th:text="${request.modifiedDateString}">2013-Apr-12</td>
+          </tr>
+          <tr class="pale-blue">
+            <td th:text="#{request.colmodifiedfound}">Found since modified</td>
+            <td th:text="${request.foundModified}">7</td>
+          </tr>
+          <tr class="pale-green">
+            <td th:text="#{request.colmodifiedviewed}">Viewed since modified</td>
+            <td th:text="${request.viewedModified}">1</td>
+          </tr>
+          <tr class="pale-blue" >
+            <td th:text="#{request.colmodifiedcontacts}">Contacts since modified</td>
+            <td th:text="${request.contactsModified}">1</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br/>
+    <div align="center" >
+      <form action="#" th:action="@{/user/requestedit}" method="post">
+            <input type="hidden" name="r" th:value="${role}" />         
+            <input type="hidden" name="id" th:value="${request.id}" />
+        <button type="submit" name="buttonValue" value="requestedit" class="darkred" th:text="#{nav.edit}">Edit</button>    
+        <button th:unless="${deleteUri}" type="submit" name="buttonValue" value="requestdel" class="darkred" th:text="#{nav.delete}">Delete</button>    
+      </form>       
+    </div>
+    <div th:if="${iswriter}" th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+ </body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!-- blogcommentedit -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+   <form action="#" th:action="@{/user/blogcommentsave}" th:object="${comment}" method="post">
+    <input type="hidden" name="id" th:value="*{id}" />
+    <input type="hidden" name="blogId" th:value="${comment.blogId}" />
+    <div class="listtable">
+      <h2 th:text="${comment.id}?${comment.title}:#{blog.comment.add}">Title</h2>
+      <table>
+        <tbody>
+          <tr class="pale-blue">
+            <span th:unless="${comment.id}">
+	            <td th:text="#{comment.coltitle}">Title</td>
+	            <td><input type="text" th:field="*{title}" size="80" MAXLENGTH="80"/>
+	                <span class="darkred" th:text="${#fields.hasErrors('title')}? ${#fields.errors('title')[0]}">Error</span>
+	                <span class="darkred" th:text="${!#fields.hasErrors('title') &amp;&amp; comment.titleEmpty}? #{required}">required</span>                
+	            </td>
+            </span>
+            <span th:if="${comment.id}">
+                <input type="hidden" name="title" th:value="*{title}" />
+                <td colspan="2">
+                   <span th:text="${comment.text}">Text</span>
+			       <span th:each="ce : ${comment.edits}">
+			         <br/><i><span th:text="${ce.createdDateString}">2013-02-23</span></i>
+			         <br/><span th:text="${ce.text}">Text</span>
+			       </span>
+                </td>
+            </span>
+          </tr>
+          <tr class="pale-green">
+            <td colspan="2">
+              <textarea rows="11" cols="100" th:field="*{textEdit}" maxlength="1100"></textarea><br/>
+              <span class="darkred" th:text="${error!=null}? ${error}">Error</span>
+              <span class="darkred" th:text="${error==null &amp;&amp; comment.textEmpty}? #{required}">required</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br/>
+    <div align="center" >
+        <button type="submit" name="save" class="darkred" th:text="#{nav.save}">Save</button>    
+    </div>
+   </form>
+   <div th:if="${iswriter}" th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

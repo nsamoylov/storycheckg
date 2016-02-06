@@ -1,0 +1,7 @@
+# database properties
+app.jdbc.driverClassName=org.postgresql.Driver
+app.jdbc.url=jdbc:postgresql://${OPENSHIFT_POSTGRESQL_DB_HOST}:${OPENSHIFT_POSTGRESQL_DB_PORT}/${OPENSHIFT_APP_NAME}
+#jdbc:postgresql://127.5.143.1:47276/storycheck
+app.jdbc.username=${OPENSHIFT_POSTGRESQL_DB_USERNAME}
+app.jdbc.password=${OPENSHIFT_POSTGRESQL_DB_PASSWORD}
+                  

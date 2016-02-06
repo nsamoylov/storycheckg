@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!-- testgrouptextedit -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+   <form action="#" th:action="${test.textShort}?@{/test/testgrouptextsave}:@{/test/testgroupfilesave}" th:object="${testgroup}" method="post" th:enctype="${test.enctype}">
+    <input type="hidden" name="r" th:value="${r}" />
+    <input type="hidden" name="id" th:value="*{id}" />
+    <input type="hidden" name="testId" th:value="${test.id}" />
+    <input type="hidden" name="writerId" th:value="*{writerId}" />
+    <div class="listtable">
+      <h2><span th:text="#{test.tablename}+' '+${test.name}">Test My Test</span><br/>
+          <span th:text="#{testgroup.tablename}+' '+${testgroup.name}">Test group My Translation</span>
+      </h2>
+      <table>
+        <tbody>
+          <tr class="pale-blue" >
+            <td colspan="2" th:text="${test.image}?#{test.image.below}:#{test.text.below}">The following text/image will be sent to all testers listed below, when this test is launched:</td>
+          </tr>
+          <tr th:if="${test.textShort}">
+            <td colspan="2">
+              <textarea rows="11" cols="100" th:field="*{text}" maxlength="1100"></textarea><br/>
+              <span class="darkred" th:text="${error!=null}? #{${error}}">Error</span>
+              <span class="darkred" th:text="${error==null &amp;&amp; testgroup.textEmpty}? #{required}">required</span>
+            </td>
+          </tr>
+          <tr th:if="${test.textLong || test.image}">
+            <td colspan="2">
+                <span th:if="${testgroup.textEmpty}">
+                  <span th:text="#{nav.add.file}" class="darkred">Upload file</span>
+	              <input type="file" id="browse" name="file" style="display: none" onchange="HandleChange();"/>
+	              <input type="text" id="filename" name="filename" />
+	              <input type="button" id="fakeBrowse" th:value="#{nav.select.file}" onclick="HandleBrowseClick();"/>
+	              <span class="darkred" th:text="${error!=null}? #{${error}}">Error</span>
+                  <span class="darkred" th:text="${error==null &amp;&amp; testgroup.textEmpty}? #{required}">required</span>                
+                </span>
+                <span th:unless="${testgroup.textEmpty}" >
+                  <a th:href="@{/test/testgroupfileview(tgId=${testgroup.id},testId=${test.id})}"><span th:text="${testgroup.text}">View file</span></a>&nbsp;
+	              <input type="file" id="browse" name="file" style="display: none" onchange="HandleChange();"/>
+	              <input type="text" id="filename" name="filename"/>
+	              <input type="button" id="fakeBrowse" th:value="#{nav.edit.file}" onclick="HandleBrowseClick();"/>&nbsp;
+                  <a th:href="@{/test/testgroupfiledel(tgId=${testgroup.id},testId=${test.id},r='testgrouptext')}"><span th:text="#{nav.delete.file}">Delete file</span></a>&nbsp;                  
+                </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <br/>
+    <div align="center" >
+        <button type="submit" name="save" class="darkred" th:text="${test.image}?#{nav.save.image}:#{nav.save.text}">Save</button>    
+    </div>
+      <br/>
+      <table>
+        <thead>
+          <tr>
+            <th th:text="#{tester.colfirst}">First Name</th>
+            <th th:text="#{tester.collast}">Last Name</th>
+            <th th:text="#{tester.colemail}">Email</th>
+            <th th:text="#{user.lang}">Language</th>
+            <th th:text="#{tester.rowgroups}">Test groups</th>
+            <th th:text="#{tester.rowtests}">Tests</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="t : ${testerstestgroup}" th:class="${tStat.even}?'pale-blue':'pale-green'">
+            <td><a th:href="@{/test/tester(id=${t.id})}"><span th:text="${t.firstnameRead}">Nick</span></a></td>
+            <td><a th:href="@{/test/tester(id=${t.id})}"><span th:text="${t.lastnameRead}">Samoylov</span></a></td>
+            <td th:text="${t.email}">emailbox@home.com</td>
+            <td th:text="#{${t.language}}">English</td>
+            <td>
+              <span th:if="${testertestgroupsmap.get(t.id).size()== 0}"><span th:text="#{testgroups.no.such}"></span></span>
+              <span th:each="tg : ${testertestgroupsmap.get(t.id)}"><span th:text="${tg.name}">My Test group 1</span><br/>
+              </span>
+            </td>                        
+            <td>
+              <span th:if="${testertestsmap.get(t.id).size()== 0}"><span th:text="#{tests.no.such}"></span></span>
+              <span th:each="tst : ${testertestsmap.get(t.id)}"><span th:text="${tst.name}">My Test 1</span><br/>
+              </span>
+            </td>                        
+          </tr>
+          <tr th:if="${testerstestgroup==null || testerstestgroup.size()==0}">
+            <td colspan="6"><span th:text="#{testers.no}">No testers</span></td>
+          </tr>
+          <tr th:remove="all" class="pale-blue">
+            <td>Select</td>
+            <td>Jack Blow</td>
+            <td>whatever@bell.com</td>
+            <td>Group 1</td>
+            <td>Test 23</td>
+          </tr>
+        </tbody>      
+      </table>    
+    </div>
+   </form>
+    <div th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

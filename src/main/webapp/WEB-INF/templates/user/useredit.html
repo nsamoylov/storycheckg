@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!-- usereredit -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+   <form action="#" th:action="@{/user/usersave}" th:object="${user}" method="post">
+    <input type="hidden" name="id" th:value="*{id}" />
+    <div class="listtable">
+      <h2 th:text="${user.id > 0}?${user.firstname+' '+user.lastname}:#{user.new}">Nick Samoylov</h2>
+      <table>
+        <tbody>
+          <tr class="pale-blue">
+            <td th:text="#{tester.colemail}">Email</td>
+            <td><input type="email" th:field="*{username}" th:value="${username}" MAXLENGTH="256"/>
+                <span class="darkred" th:text="${#fields.hasErrors('username')}? ${#fields.errors('username')[0]}">Error</span>
+                <span class="darkred" th:text="${!#fields.hasErrors('username') &amp;&amp; (user.username==null || user.username.length()==0)}? #{required}">required</span>
+            </td>                
+          </tr>
+          <tr class="pale-green">
+            <td th:text="#{tester.colfirst}">First name</td>
+            <td><input type="text" th:field="*{firstname}" MAXLENGTH="128"/>
+                <span class="darkred" th:text="${#fields.hasErrors('firstname')}? ${#fields.errors('firstname')[0]}">Error</span>
+                <span class="darkred" th:text="${!#fields.hasErrors('firstname') &amp;&amp; (user.firstname==null || user.firstname.length()==0)}? #{required}">required</span>                
+            </td>
+          </tr>
+          <tr class="pale-blue">
+            <td th:text="#{tester.collast}">Last name</td>
+            <td><input type="text" th:field="*{lastname}" MAXLENGTH="128"/>
+                <span class="darkred" th:text="${#fields.hasErrors('lastname')}? ${#fields.errors('lastname')[0]}">Error</span>
+                <span class="darkred" th:text="${!#fields.hasErrors('lastname') &amp;&amp; (user.lastname==null || user.lastname.length()==0)}? #{required}">required</span>                
+            </td>
+          </tr>
+          <tr class="pale-green">
+            <td th:text="#{user.language}">Working language</td>
+            <td>
+               <select th:field="*{language}">
+                   <option th:each="v : ${user.languageOptions}" th:text="#{${v}}" th:value="${v}" >option</option>
+               </select>
+            </td>
+           </tr>
+          <tr class="pale-blue">
+            <td th:text="#{user.roles}">Roles</td>
+            <td>
+              <span th:each="r : ${user.roleOptions}">
+                <input type="checkbox" th:field="*{roles}" th:value="${r}" /><label th:text="#{${r}}">Writer</label>
+              </span>&nbsp;&nbsp;
+                <span class="darkred" th:text="${#fields.hasErrors('roles')}? ${#fields.errors('roles')[0]}">Error</span>
+                <span class="darkred" th:text="${!#fields.hasErrors('roles') &amp;&amp; (user.roles==null || user.roles.size()==0)}? #{required}">required</span>                
+              <span th:remove="all"><input id="removed1" type="checkbox" /><label for="removed1">Tester</label></span>
+            </td>
+          </tr>
+          <tr th:if="${user.id lt 1}" class="pale-green">
+            <td th:text="#{login.password(#{login.password.latin.only})}">Password:</td>
+            <td><input type="password" th:field="*{password}" MAXLENGTH="45"/>
+                <span class="darkred" th:text="${#fields.hasErrors('password')}? ${#fields.errors('password')[0]}">Error</span>
+                <span class="darkred" th:text="${!#fields.hasErrors('password') &amp;&amp; (user.password==null || user.password.length()==0)}? #{required}">required</span>              
+            </td>
+          </tr>
+          <tr th:if="${user.id lt 1}" class="pale-blue">
+            <td th:text="#{login.password.again}">Password again:</td>
+            <td><input type="password" th:field="*{passwordAgain}" MAXLENGTH="45"/>
+                <span class="darkred" th:text="${#fields.hasErrors('passwordAgain')}? ${#fields.errors('passwordAgain')[0]}">Error</span>
+                <span class="darkred" th:text="${!#fields.hasErrors('passwordAgain') &amp;&amp; (user.passwordAgain==null || user.passwordAgain.length()==0)}? #{required}">required</span>               
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br/>
+    <div align="center" >
+        <button type="submit" name="buttonValue" value="usersave" class="darkred" th:text="${user.id==0}?#{nav.register}:#{nav.save}">Register/Save</button>
+        <button type="submit" name="buttonValue" value="userdelete" class="darkred" th:if="${user.id > 0}" th:text="#{user.delete}">Delete</button>    
+    </div>
+   </form>
+  </body>
+</html>

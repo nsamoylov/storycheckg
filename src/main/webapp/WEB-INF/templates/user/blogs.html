@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!-- blogs -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+  <body>
+     <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+     <table border="0" cellpadding="0" cellspacing="0" width="100%">
+       <div th:if="${blogs.size() > 0}">
+         <tr>
+             <td align="right">
+		       <form action="#" th:action="@{/user/blogsearch}" th:object="${blog}" method="post">
+		          <input type="text" th:field="*{search}" MAXLENGTH="128"/>&nbsp;
+		          <button type="submit" name="buttonValue" value="blogsearch" class="darkred" th:text="#{search}">Search</button>    
+		       </form>       
+             </td>
+         </tr>
+        </div>
+       <span th:each="b : ${blogs}">
+         <tr><td><i><span th:text="${b.createdDateString}">2013-02-23</span>&nbsp;&nbsp;<b><span th:text="${b.userName}">Nick Samoylov</span></b></i></td></tr>
+         <tr><td><b><a th:href="@{/user/blogview(id=${b.id})}"><span th:text="${b.title}" style="text-decoration: underline;color:#c60;font:normal normal 150% Georgia, Serif;">Blog title</span></a></b></td></tr>
+         <tr><td th:text="${b.textShort}">First 200 symbols of the text</td></tr>
+         <tr><td style="font:normal normal 78% 'Trebuchet MS', Trebuchet, Arial, Verdana, Sans-serif;"><span th:text="${b.commentsPublished}">10</span>&nbsp;<span th:text="#{blog.comments}">comments</span></td></tr>
+         <tr><td>&nbsp;</td></tr>
+       </span>
+     </table>
+     <h3 th:if="${noblogs}" th:text="${noblogs}" align="center" class="darkred">No entries></h3>
+     <span th:if="${blogs.size() > 0}">
+        <h3 sec:authorize="isAnonymous()" th:text="#{blog.registered.only}" align="center" class="darkred">Only registered users can add blog entry</h3>
+     </span>
+     <span sec:authorize="!isAnonymous()">
+       <div align="center">
+         <form action="#" th:action="@{/user/blogadd}" method="post">
+            <button type="submit" name="buttonValue" value="blogadd" class="darkred" th:text="#{blog.add}">Add new entry</button>    
+         </form>       
+       </div>
+     </span>
+     <div th:if="${iswriter}" th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

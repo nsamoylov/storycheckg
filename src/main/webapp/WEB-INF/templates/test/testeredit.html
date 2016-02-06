@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!-- testeredit -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+   <form action="#" th:action="@{/test/testersave}" th:object="${tester}" method="post">
+    <input type="hidden" name="r" th:value="${r}" />
+    <input type="hidden" name="id" th:value="*{id}" />
+    <input type="hidden" name="writerId" th:value="*{writerId}" />
+    <div class="listtable">
+      <h2 th:text="${tester.id}?${tester.firstnameRead+' '+tester.lastnameRead}:#{tester.new}">Nick Samoylov</h2>
+      <table>
+        <tbody>
+          <tr class="pale-blue">
+            <td th:text="#{tester.colfirst}">First name</td>
+            <td><input type="text" th:field="*{firstname}" MAXLENGTH="128"/>
+                <span class="darkred" th:text="${#fields.hasErrors('firstname')}? ${#fields.errors('firstname')[0]}">Error</span>
+                <span class="darkred" th:text="${!#fields.hasErrors('firstname') &amp;&amp; (tester.firstname==null || tester.firstname.length()==0)}? #{required}">required</span>                
+            </td>
+          </tr>
+          <tr class="pale-green">
+            <td th:text="#{tester.collast}">Last name</td>
+            <td><input type="text" th:field="*{lastname}" MAXLENGTH="128"/>
+                <span class="darkred" th:text="${#fields.hasErrors('lastname')}? ${#fields.errors('lastname')[0]}">Error</span>
+                <span class="darkred" th:text="${!#fields.hasErrors('lastname') &amp;&amp; (tester.lastname==null || tester.lastname.length()==0)}? #{required}">required</span>                
+            </td>
+          </tr>
+          <tr class="pale-blue">
+            <td th:text="#{tester.colemail}">Email</td>
+            <td><input type="email" th:field="*{email}" th:value="${email}" MAXLENGTH="256"/>
+                <span class="darkred" th:text="${#fields.hasErrors('email')}? ${#fields.errors('email')[0]}">Error</span>
+                <span class="darkred" th:text="${!#fields.hasErrors('email') &amp;&amp; (tester.email==null || tester.email.length()==0)}? #{required}">required</span>
+            </td>                
+          </tr>
+          <tr class="pale-green">
+            <td th:text="#{user.language}">Working language</td>
+            <td>
+               <select th:field="*{language}">
+                   <option th:each="v : ${tester.languageOptions}" th:text="#{${v}}" th:value="${v}" >option</option>
+               </select>
+            </td>
+           </tr>
+          <tr th:if="${tester.id}" class="pale-blue">
+            <td th:text="#{tester.rowgroups}">Test groups</td>
+            <td>
+              <span th:if="${testgroupstester.size()== 0}"><span th:text="#{testgroups.no.such}"></span></span>
+              <span th:each="t : ${testgroupstester}">
+                 <span th:text="${t.name}">My Test group 1</span><br/>
+              </span>
+            </td>                        
+          </tr>
+          <tr th:if="${tester.id}" class="pale-green">
+            <td th:text="#{tester.rowtests}">Test groups</td>
+            <td>
+              <span th:if="${teststester.size()== 0}"><span th:text="#{tests.no.such}"></span></span>
+              <span th:each="t : ${teststester}">
+                 <span th:text="${t.name}">My Test 1</span><br/>
+              </span>
+            </td>                        
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br/>
+    <div align="center" >
+        <button type="submit" name="save" class="darkred" th:text="#{nav.save}">Save</button>    
+    </div>
+   </form>
+   <div th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

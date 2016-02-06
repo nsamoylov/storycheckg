@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<!-- test -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+    <div class="listtable">
+      <h2 th:text="#{test.tablename}+' '+${test.name}">Test My Book version 1</h2>
+      <div th:if="${deleteUri}" th:include="fragment/common :: [//div[@id='confirmdelete']]"></div>
+      <table>
+        <tbody>
+          <tr th:if="${test.id}" class="pale-blue">
+            <td th:text="#{test.colstatus}">Test status</td>
+            <td th:text="#{${test.status}}">Active</td>
+          </tr>
+          <tr class="pale-green">
+            <td th:text="#{test.coltextlength}">To be tested</td>
+            <td th:text="#{${test.testTextLength}}">Short/Long/Image</td>
+           </tr>
+          <tr class="pale-blue" >
+            <td colspan="2" th:text="#{test.email.below}">The following email will be sent to all groups listed below, when this test is launched:</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <span th:if="${test.emailTextEmpty}" th:text="#{test.emailtext.no}"></span>
+              <span th:if="${!test.emailTextEmpty}" th:text="${test.emailText}"></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <br/>
+    <div align="center" >
+      <form action="#" th:action="@{/test/testemailedit}" method="post">
+            <input type="hidden" name="r" value="test" />         
+            <input type="hidden" name="testId" th:value="${test.id}" />
+        <button type="submit" class="darkred" th:if="${test.emailTextEmpty}" th:text="#{nav.add.emailtext}">Add email</button>
+        <button type="submit" class="darkred" th:unless="${test.emailTextEmpty}" th:text="#{nav.edit.emailtext}">Edit email</button>
+      </form>    
+    </div>
+    <br/>
+    <br/>
+      <table>
+        <thead>
+          <tr>
+            <th th:text="#{test.coltestgroup}">Test group name</th>
+            <th th:text="${test.image}?#{test.colimage}:#{test.coltext}">Text/Image</th>            
+            <th th:text="#{testgroup.colsize}">Group size</th>            
+            <th th:text="#{testgroup.coltests}">Tests it participates</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="t : ${testgroupstest}" th:class="${tStat.even}?'pale-blue':'pale-green'">
+            <td><a th:href="@{/test/testgrouptext(id=${t.id},testId=${test.id})}"><span th:text="${t.name}">My Translation Group</span></a></td>
+	        <td><a th:href="@{/test/testgrouptextedit(id=${t.id},testId=${test.id},r='test')}">
+	              <span th:if="${t.textEmpty}" th:text="${test.image}?#{nav.add.image}:#{nav.add.text}"  style="text-decoration: underline;color:maroon;" class="darkred">Add text</span>
+	              <span th:unless="${t.textEmpty}" th:text="${test.image}?#{nav.edit.image}:#{nav.edit.text}">Edit text</span>
+	            </a>            
+            </td>                        
+	        <td th:text="${t.size}">3</td>
+            <td>
+              <span th:if="${testsmap.get(t.id).size()==0}" th:text="#{tests.no}">No tests</span>
+              <span th:each="test : ${testsmap.get(t.id)}"><a th:href="@{/test/test(id=${test.id})}"><span th:text="${test.name}">My Test 1</span></a><br/></span>
+            </td>                        
+          </tr>
+          <tr th:if="${testgroupstest==null || testgroupstest.size()==0}">
+            <td colspan="4"><span th:text="#{testgroups.no}">No test groups</span></td>
+          </tr>
+          <tr th:remove="all" class="pale-blue">
+            <td>Another Group</td>
+            <td>3</td>
+            <td>Add/Edit text</td>
+            <td>Test 1</td>
+          </tr>        
+        </tbody>
+      </table>    
+    </div>
+    <br/>
+    <div align="center" >
+      <form action="#" th:action="@{/test/testedit}" method="post">
+            <input type="hidden" name="r" value="test" />         
+            <input type="hidden" name="id" th:value="${test.id}" />
+        <button type="submit" name="buttonValue" value="testedit" class="darkred" th:text="#{test.edit}">Edit</button>    
+        <button th:unless="${deleteUri}" type="submit" name="buttonValue" value="testdel" class="darkred" th:text="#{test.delete}">Delete</button>    
+        <button th:if="${test.ready}" type="submit" name="buttonValue" value="testrun" class="darkred" th:text="#{nav.run}">Run test</button>    
+      </form>       
+    </div>
+    <div th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

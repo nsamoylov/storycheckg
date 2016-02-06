@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!-- login.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+<div>
+  <table>
+    <tr>
+    <td>
+        <img src="../../images/cheshire01.gif" alt="Storycheck logo" title="Storycheck logo" 
+                         th:src="#{application.logo}" th:alt-title="#{application.title}"/>     
+    </td>
+    <td align="CENTER" valign="MIDDLE" width="70%">
+     <form th:action="@{/j_spring_security_check}" method="post">
+	  <table>
+	    <tr>
+		    <td>&nbsp;</td>
+		    <td align="center">
+		         <a href="?lang=ru" th:href="@{${resubmitUri}(lang='ru')}">Russian</a> | <a href="?lang=en" th:href="@{${resubmitUri}(lang='en')}">English</a>
+		    </td>
+	    </tr>
+	    <tr>
+		    <td>&nbsp;</td>
+		    <td align="center">
+		         <p th:if="${loginError}" class="error"><span th:text="#{login.error}">Wrong user or password</span></p>
+		    </td>
+	    </tr>
+	    <tr>
+		    <td align="right" th:text="#{login.name}" for="j_username">Username</td>
+		    <td><input type="text" id="j_username" name="j_username" autofocus="autofocus" /></td>
+	    </tr>
+	    <tr>
+		    <td align="right" th:text="#{login.password('')}" for="j_password">Password</td>
+		    <td><input type="password" id="j_password" name="j_password" /></td>
+	    </tr>
+	    <tr>
+		    <td align="right" th:text="#{login.rememberme}" for="_spring_security_remember_me">Remember me</td>
+		    <td><input type="checkbox" id="_spring_security_remember_me" name="_spring_security_remember_me" tabindex="3" value="true"/></td>
+	    </tr>
+	    <tr>
+		    <td>&nbsp;</td>
+		    <td align="center">
+		         <input type="submit" th:value="#{login.submit}" value="Let me in!" />
+		    </td>
+	    </tr>
+	    <tr>
+		    <td>&nbsp;</td>
+		    <td>&nbsp;</td>
+	    </tr>
+	    <tr>
+		    <td>&nbsp;</td>
+		    <td align="center">
+	            <a href="#" target="_parent" th:text="#{login.forgot}">Forgot password</a>
+		    </td>
+	    </tr>
+	    <tr>
+		    <td>&nbsp;</td>
+		    <td>&nbsp;</td>
+	    </tr>
+	    <tr>
+		    <td>&nbsp;</td>
+		    <td align="center">
+			     <a href="index.html" th:href="@{/index}"><span th:text="#{returnhome}">Back to home page</span></a>
+		    </td>
+	    </tr>
+	  </table>       
+     </form>
+     </td>
+    </tr>
+  </table>       
+</div>
+ </body>
+</html>

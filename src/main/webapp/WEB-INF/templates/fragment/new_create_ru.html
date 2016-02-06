@@ -1,0 +1,13 @@
+        <div>
+        <p>
+        <span th:if="${createtester}">
+          <br/><a href="" th:href="@{/test/testers}">Введите электронные адреса</a> тех, чьё мнение вас интересует.
+        </span>
+        <span th:if="${createtestgroup}">
+          <br/><a href="" th:href="@{/test/testgroupadd}">Создайте</a> тестовые группы.
+        </span>
+        <span th:if="${createtest}">
+          <br/><a href="" th:href="@{/test/testadd}">Создайте</a> тесты для ваших книг, идей, иллюстраций.
+        </span>
+        </p>
+        </div>

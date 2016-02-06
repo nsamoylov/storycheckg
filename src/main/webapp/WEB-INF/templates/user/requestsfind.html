@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<!-- requestsfind -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+  <body>
+    <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+      <h2 th:text="#{requestsfind.tablename}">Results:</h2>
+      <table>
+        <span th:each="r : ${requests}">
+          <tr><td><a th:href="@{/user/requestview(id=${r.id},r=${role},r2=${r.role.short})}"><span th:text="${r.title}">My request title</span></a></td></tr>
+          <tr><td th:text="${r.requestShort}">First 200 symbols of the request</td></tr>
+        </span>
+        <tr th:if="${requests==null || requests.size()==0}">
+          <td><span th:text="#{requestsfind.no}">No requests</span></td>
+        </tr>
+      </table>
+    <div th:if="${iswriter}" th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

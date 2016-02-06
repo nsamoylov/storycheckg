@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<!-- testgrouptext -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+    <div class="listtable">
+      <h2><span th:text="#{test.tablename}+' '+${test.name}">Test My Test</span><br/>
+          <span th:text="#{testgroup.tablename}+' '+${testgroup.name}">Test group My Translation</span>
+      </h2>
+      <table>
+        <tbody>
+          <tr class="pale-blue" >
+            <td colspan="2" th:text="${test.image}?#{test.image.below}:#{test.text.below}">The following text/image will be sent to all testers listed below, when this test is launched:</td>
+          </tr>
+          <tr th:if="${test.textLong}">
+            <td colspan="2">
+              <span th:if="${testgroup.textEmpty}" th:text="#{test.text.no}"></span>
+               <a th:if="${!testgroup.textEmpty}" th:href="@{/test/testgroupfileview(tgId=${testgroup.id},testId=${test.id})}"><span th:text="${testgroup.text}">View file</span></a>
+            </td>
+          </tr>
+          <tr th:if="${test.textShort}">
+            <td colspan="2">
+              <span th:if="${testgroup.textEmpty}" th:text="#{test.text.no}"></span>
+              <span th:if="${!testgroup.textEmpty}" th:text="${testgroup.text}"></span>
+            </td>
+           </tr>
+          <tr th:if="${test.image}">
+            <td colspan="2">
+              <span th:if="${testgroup.textEmpty}" th:text="#{test.image.no}"></span>
+               <a th:if="${!testgroup.textEmpty}" th:href="@{/test/testgroupfileview(tgId=${testgroup.id},testId=${test.id})}"><span th:text="${testgroup.text}">View file</span></a>
+            </td>
+           </tr>
+        </tbody>
+      </table>
+    <div align="center" >
+      <form action="#" th:action="@{/test/testgrouptextedit}" method="post"> 
+            <input type="hidden" name="r" value="testgrouptext" />         
+            <input type="hidden" name="id" th:value="${testgroup.id}" />
+            <input type="hidden" name="testId" th:value="${test.id}" />
+        <button type="submit" class="darkred" th:text="${test.image}?#{nav.edit.image}:#{nav.edit.text}">Edit</button>
+      </form>    
+    </div>
+      <br/>
+      <table>
+        <thead>
+          <tr>
+            <th th:text="#{tester.colfirst}">First Name</th>
+            <th th:text="#{tester.collast}">Last Name</th>
+            <th th:text="#{tester.colemail}">Email</th> 
+            <th th:text="#{user.lang}">Language</th>
+            <th th:text="#{tester.rowgroups}">Test groups</th>
+            <th th:text="#{tester.rowtests}">Tests</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="t : ${testerstestgroup}" th:class="${tStat.even}?'pale-blue':'pale-green'">
+            <td><a th:href="@{/test/tester(id=${t.id})}"><span th:text="${t.firstnameRead}">Nick</span></a></td>
+            <td><a th:href="@{/test/tester(id=${t.id})}"><span th:text="${t.lastnameRead}">Samoylov</span></a></td>
+            <td th:text="${t.email}">emailbox@home.com</td>
+            <td th:text="#{${t.language}}">English</td>
+            <td>
+              <span th:if="${testertestgroupsmap.get(t.id).size()== 0}"><span th:text="#{testgroups.no.such}"></span></span>
+              <span th:each="tg : ${testertestgroupsmap.get(t.id)}">
+                 <a th:href="@{/test/testgroup(id=${tg.id})}"><span th:text="${tg.name}">My Test group 1</span></a><br/>
+              </span>
+            </td>                        
+            <td>
+              <span th:if="${testertestsmap.get(t.id).size()== 0}"><span th:text="#{tests.no.such}"></span></span>
+              <span th:each="tst : ${testertestsmap.get(t.id)}">
+                 <a th:href="@{/test/test(id=${tst.id})}"><span th:text="${tst.name}">My Test 1</span></a><br/>
+              </span>
+            </td>                        
+          </tr>
+          <tr th:if="${testerstestgroup==null || testerstestgroup.size()==0}">
+            <td colspan="6"><span th:text="#{testers.no}">No testers</span></td>
+          </tr>
+          <tr th:remove="all" class="pale-blue">
+            <td>Select</td>
+            <td>Jack Blow</td>
+            <td>whatever@bell.com</td>
+            <td>Group 1</td>
+            <td>Test 23</td>
+          </tr>
+        </tbody>      </table>    
+    </div>
+    <div th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

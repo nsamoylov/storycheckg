@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!-- options.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+    <div class="listtable">
+    <h2 th:text="#{nav.more}">More options</h2>
+      <table th:if="${user}">
+        <thead>
+          <tr>
+            <th th:text="#{nav.colrole}">Role</th>
+            <th th:text="#{nav.coloptions}">What can you do</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:if="${user.writer}" th:class="${user.getRoleClass('role.writer')}">
+            <td th:text="#{nav.role.youcan(#{role.writer})}">As writer</td>
+            <td><a th:href="@{/test/tests}"><span th:text="#{nav.your.tests}">Your tests</span></a><br/>
+                <a th:href="@{/user/requests(r='w')}"><span th:text="#{nav.request}">Publish/Edit/Delete your request for editing, translating or proofreading</span></a><br/>
+            </td>
+          </tr>
+          <tr th:if="${user.tester}" th:class="${user.getRoleClass('role.tester')}">
+            <td th:text="#{nav.role.youcan(#{role.tester})}">As tester</td>
+            <td>
+                <span th:text="#{nav.canbeselected}">You can be selected</span><br/>
+                <a th:href="@{/user/requests(r='i')}"><span th:text="#{nav.your.requirements(#{role.work.testing})}">Publish/Edit/Delete your availability and requirements</span></a><br/>
+            </td>
+          </tr>
+          <tr th:if="${user.proofreader}" th:class="${user.getRoleClass('role.proofreader')}">
+            <td th:text="#{nav.role.youcan(#{role.proofreader})}">As proofreader</td>
+            <td> 
+                <a th:href="@{/user/requestsfind(r='p',r2='w')}"><span th:text="#{nav.find.request(#{role.work.proofreading})}">Find published requests for proofreading</span></a><br/>
+                <a th:href="@{/user/requests(r='p')}"><span th:text="#{nav.your.requirements(#{role.work.proofreading})}">Publish/Edit/Delete your availability and requirements</span></a><br/>
+	        </td>
+          </tr>
+          <tr th:if="${user.editor}" th:class="${user.getRoleClass('role.editor')}">
+            <td th:text="#{nav.role.youcan(#{role.editor})}">As editor</td>
+            <td>
+                <a th:href="@{/user/requestsfind(r='e',r2='w')}"><span th:text="#{nav.find.request(#{role.work.editing})}">Find published requests for editing</span></a><br/>
+                <a th:href="@{/user/requests(r='e')}"><span th:text="#{nav.your.requirements(#{role.work.editing})}">Publish/Edit/Delete your availability and requirements</span></a><br/>
+	        </td>
+          </tr>
+          <tr th:if="${user.translator}" th:class="${user.getRoleClass('role.translator')}">
+            <td th:text="#{nav.role.youcan(#{role.translator})}">As translator</td>
+            <td>
+                <a th:href="@{/user/requestsfind(r='t',r2='w')}"><span th:text="#{nav.find.request(#{role.work.translating})}">Find published requests for translating</span></a><br/>
+                <a th:href="@{/user/requests(r='t')}"><span th:text="#{nav.your.requirements(#{role.work.translating})}">Publish/Edit/Delete your availability and requirements</span></a><br/>
+	        </td>
+          </tr>
+        </tbody>
+      </table>
+      <p align="center" class="darkred">
+         <a href="" th:href="@{/user/useredit}"><span th:text="#{nav.edit.profile}">Edit profiler</span></a>
+      </p>
+     </div>
+      </body>
+</html>

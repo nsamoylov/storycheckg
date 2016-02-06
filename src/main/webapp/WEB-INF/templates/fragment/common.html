@@ -1,0 +1,63 @@
+<head>
+  <meta name="msvalidate.01" content="554D2CD2424E659A69CE540B5C217C32" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
+  <link rel="shortcut icon" href="/favicon.png" type="image/png"/>
+  <title th:text="#{application.title}">Storycheck for writers</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <script type="text/javascript" src="/js/storycheck.js?v=1"/>
+  <link rel="stylesheet" type="text/css" media="all" href="/css/storycheck.css?v=0" />
+</head>
+<div id="logo">
+  <table>
+    <tr>
+    <td>
+        <img src="../../../images/cheshire01.gif" alt="Storycheck logo" title="Storycheck logo" 
+                         th:src="#{application.logo}" th:alt-title="#{application.title}"/>     
+    </td>
+    <td width="100%" align="right">
+       <p th:if="${resubmitUri}"><a href="?lang=ru" th:href="@{${resubmitUri}(lang='ru')}">Russian</a> | <a href="?lang=en" th:href="@{${resubmitUri}(lang='en')}">English</a></p>
+       <p th:unless="${dontshowlogin}"><span sec:authorize="isAnonymous()">
+			  <a th:text="#{nav.login}" href="" th:href="@{/login}">Login</a> | <a th:text="#{nav.register}" th:href="@{/user/useradd}">Create an account</a>
+		  </span>
+	   </p>
+       <p><a th:text="#{nav.blog}" th:href="@{/user/blogs}">Blog</a>
+        | <a th:text="#{nav.translators}" href="" th:href="@{/user/requestsfind(r='w',r2='t')}">Find translator</a>
+        | <a th:text="#{nav.proofreaders}" href="" th:href="@{/user/requestsfind(r='w',r2='p')}">Find proofreader</a>
+        | <a th:text="#{nav.editors}" href="" th:href="@{/user/requestsfind(r='w',r2='e')}">Find editor</a>
+        </p>
+        <span sec:authorize="!isAnonymous()">
+	        <span th:if="!${moreoptions}">
+	        <p>
+	          <a th:text="#{nav.more}" th:href="@{/moreoptions}">More options</a>
+			| <a href="" th:text="#{nav.logout}" th:href="@{/j_spring_security_logout}">Logout</a>
+	        </p>       
+			</span>
+		</span>
+       <div class="headlines" th:text="${news}"></div>
+    </td>
+    </tr>
+  </table>       
+</div>
+
+<div id="confirmdelete">
+ <h3 align="right" class="darkred" >
+   <span th:text="#{confirmdelete(${namedelete})}">Please confirm</span>
+   <a th:text="#{confirmyes}" href="#" th:href="@{${deleteUri}(confirm='yes')}">Yes</a> | <a th:text="#{confirmno}" href="" th:href="@{${resubmitUri}}">No</a>
+   <span th:if="${warn1property}">
+     <br/><span th:text="#{${warn1property}}+' '+${warn1text}"></span>
+   </span>
+   <span th:if="${warn2property}">
+     <br/><span th:text="#{${warn2property}}+' '+${warn2text}"></span>
+   </span>
+ </h3>
+</div>
+
+<div id="test_footer">
+      <p align="center">
+         <a th:text="#{testers.tablename}"     th:href="@{/test/testers}">    All your testers</a>
+       | <a th:text="#{testgroups.tablename}"  th:href="@{/test/testgroups}"> All your test groups</a>
+       | <a th:text="#{tests.tablename}"       th:href="@{/test/tests}">      All your tests</a>
+       | <a th:text="#{testresults.tablename}" th:href="@{/test/testresults}">Test results</a>
+      </p>
+</div>
+    

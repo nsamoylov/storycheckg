@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!-- requestanswer -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+   <div class="listtable">
+      <h2 th:text="${request.title}">Title</h2>
+      <table>
+        <tbody>
+          <tr class="pale-blue">
+            <td th:text="${request.requestText}" colspan="2">Text of the request</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br/>
+    <h3 th:text="#{request.emailtext}">Email text</h3>
+    <form action="#" th:action="@{/user/requestanswersend}" th:object="${request}" method="post">
+            <input type="hidden" name="id" th:value="*{id}" />
+            <input type="hidden" name="title" th:value="*{title}" />         
+            <input type="hidden" name="p" th:value="${p}" />         
+            <input type="hidden" name="r" th:value="${role}" />         
+            <input type="hidden" name="uid" th:value="${userid}" />
+            <input type="hidden" name="uid2" th:value="${userid2}" />
+	    <table>
+	      <tbody>
+	        <tr>
+	          <td>
+	              <textarea rows="5" cols="100" th:field="*{emailText}" maxlength="500"></textarea><br/>
+	              <span class="darkred" th:text="${error!=null}? ${error}">Error</span>
+	              <span class="darkred" th:text="${error==null &amp;&amp; request.emailTextEmpty}? #{required}">required</span>
+	          </td>
+	        </tr>
+	      </tbody>
+	    </table>
+	    <div align="center" >
+	        <button type="submit" class="darkred" th:text="#{nav.sendemail}">Send email</button>    
+	    </div>
+      </form>       
+    <div th:if="${iswriter}" th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+ </body>
+</html>

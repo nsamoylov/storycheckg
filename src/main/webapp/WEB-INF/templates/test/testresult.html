@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!-- testresult -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+    <div class="listtable">
+      <h2 th:text="#{test.tablename}+' '+${test.name}+': '+${test.createdDateString}+' - '+${test.completeness}">Test My Book: 23-Apr-2013 - 50%</h2>
+      <table>
+        <thead>
+          <tr>
+            <th th:text="#{test.email.below.was(${test.createdDateString})}">The following email was sent to all the groups listed below on 'createdDate', when this test was launched:</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td th:text="${test.emailText}">The email text</td>
+          </tr>
+        </tbody>
+      </table>
+      <br/>
+      <table>
+        <thead>
+          <tr>
+            <th th:text="${test.image}?#{testresults.tested.image}:#{testresults.tested.text}">Tested</th>
+            <th th:text="#{test.coltestgroup}">Test group name</th>
+            <th th:text="#{testgroup.colsize}">Group size</th>            
+            <th th:text="#{testresults.colanswered}">Answered</th>
+            <th th:text="#{testresults.comments}">Answered</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="t : ${testgroupstest}" th:class="${tStat.even}?'pale-blue':'pale-green'">
+            <td>
+                <span th:if="${test.textShort}">
+                  <a th:href="@{/test/testgroupresulttext(tgId=${t.id},qt=${test.questionsToken})}"><span th:text="#{testresults.text.short}">My Test</span></a>
+                </span>
+                <span th:unless="${test.textShort}">
+                  <a th:href="@{/test/testgroupresultfileview(tgId=${t.id},qt=${test.questionsToken})}"><span th:text="${t.text}">View file</span></a>
+                </span>
+            </td>
+            <td><a th:href="@{/test/testgroupresult(tgId=${t.id},qt=${test.questionsToken})}"><span th:text="${t.name}">My Translation Group</span></a></td>
+            <td align="center" th:text="${t.size}">3</td>
+            <td align="center" th:text="${t.completeness}">Completeness</td>
+            <td>	                  
+               <a th:href="@{/test/testresultcomments(tgId=${t.id},qt=${test.questionsToken})}"><span th:text="#{testresults.comments}">My Test</span></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>    
+      <span th:each="q : ${questions.questions}">
+      <div class="listtable">
+      <h3 th:text="${q}">Question 1?</h3>
+      <table>
+        <thead>
+          <tr>
+            <th th:text="#{test.coltestgroup}">Test group name</th>
+            <th th:each="a : ${questions.getAnswerOptions(qStat.count)}" th:text="${questions.getAnswerValue(qStat.count,aStat.count)}">Yes/No/Very Much</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="t : ${testgroupstest}" th:class="${tStat.even}?'pale-blue':'pale-green'">
+            <td th:text="${t.name}">Test Group 22</td>
+            <td th:each="a : ${questions.getAnswerOptions(qStat.count)}" th:text="${t.getCompleteness(qStat.count,aStat.count)}">10%/25%/65%</td>
+          </tr>
+         </tbody>
+      </table>
+      </div>
+      </span>    
+    </div>
+    <div th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

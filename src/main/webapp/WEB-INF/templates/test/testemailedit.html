@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!-- testemailedit -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+   <form action="#" th:action="@{/test/testemailsave}" th:object="${test}" method="post">
+    <input type="hidden" name="r" th:value="${r}" />
+    <input type="hidden" name="id" th:value="*{id}" />
+    <input type="hidden" name="writerId" th:value="*{writerId}" />
+    <div class="listtable">
+      <h2 th:text="${test.id}?(#{test.tablename}+' '+${test.name}):#{test.new}">Test My First Book</h2>
+      <table>
+        <tbody>
+          <tr th:if="${test.id}" class="pale-blue">
+            <td th:text="#{test.colstatus}">Test status</td>
+            <td th:text="#{${test.status}}">Active</td>
+          </tr>
+          <tr class="pale-green">
+            <td th:text="#{test.coltextlength}">To be tested</td>
+            <td th:text="#{${test.testTextLength}}">Short/Long/Image</td>
+           </tr>
+          <tr class="pale-blue" >
+            <td colspan="2" th:text="#{test.email.below}">The following email will be sent to all groups listed below, when this test is launched:</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <textarea rows="11" cols="100" th:field="*{emailText}" maxlength="1100"></textarea><br/>
+              <span class="darkred" th:text="${error!=null}? #{${error}}">Error</span>
+              <span class="darkred" th:text="${error==null &amp;&amp; test.emailTextEmpty}? #{required}">required</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <br/>
+    <div align="center" >
+        <button type="submit" name="saveButton" value="testemailsave" class="darkred" th:text="#{nav.save}">Save</button>    
+        <button type="submit" name="saveButton" value="sendemailsample" class="darkred" th:text="#{nav.saveemail}">Save and send me sample</button>    
+    </div>
+    <br/>
+      <table>
+        <thead>
+          <tr>
+            <th th:text="#{test.coltestgroup}">Test group name</th>
+            <th th:text="#{testgroup.colsize}">Group size</th>
+            <th th:text="#{testgroup.coltests}">Tests it participates</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="t : ${testgroupstest}" th:class="${tStat.even}?'pale-blue':'pale-green'">
+            <td><a th:href="@{/test/testgrouptext(id=${t.id},testId=${test.id})}"><span th:text="${t.name}">My Translation Group</span></a></td>
+            <td th:text="${t.size}">3</td>
+            <td>
+              <span th:if="${testsmap.get(t.id).size()==0}" th:text="#{tests.no}">No tests</span>
+              <span th:each="test : ${testsmap.get(t.id)}"><a th:href="@{/test/test(id=${test.id})}"><span th:text="${test.name}">My Test 1</span></a><br></br></span>
+            </td>                        
+          </tr>
+          <tr th:if="${testgroupstest==null || testgroupstest.size()==0}">
+            <td colspan="3"><span th:text="#{testgroups.no}">No test groups</span></td>
+          </tr>
+          <tr th:remove="all" class="pale-blue">
+            <td>Another Group</td>
+            <td>3</td>
+            <td>Test 1</td>
+          </tr>        </tbody>
+      </table>    
+    </div>
+   </form>
+    <div th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

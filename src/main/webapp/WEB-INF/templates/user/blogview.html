@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<!-- blogview -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+    <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+    <br/>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+       <tr><td><i><span th:text="${blog.createdDateString}">2013-02-23</span>&nbsp;&nbsp;<b><span th:text="${blog.userName}">Nick Samoylov</span></b></i></td></tr>
+       <tr><td th:text="${blog.title}" style="color:#c60;font:normal normal 150% Georgia, Serif;">Title</td></tr>
+       <tr><td th:text="${blog.text}">Text</td></tr>
+       <tr th:each="be : ${blog.edits}">
+         <td><br/><i><span th:text="${be.createdDateString}">2013-02-23</span></i>
+             <br/><span th:text="${be.text}">Text</span>
+         </td>
+       </tr>
+       <tr th:if="${blog.editable}" style="font:normal normal 78% 'Trebuchet MS', Trebuchet, Arial, Verdana, Sans-serif;">
+        <td align="right">
+               <span th:text="#{blog.found}">Found:</span>&nbsp;<span th:text="${blog.foundPublished}">10</span>&nbsp;<span th:text="#{blog.since.published}">since published;</span>
+                                                          &nbsp;<span th:text="${blog.foundModified}">7</span>&nbsp;<span th:text="#{blog.since.modified}">since modified</span>
+          <br/><span th:text="#{blog.viewed}">Viewed:</span>&nbsp;<span th:text="${blog.viewedPublished}">10</span>&nbsp;<span th:text="#{blog.since.published}">since published;</span>
+                                                            &nbsp;<span th:text="${blog.viewedModified}">7</span>&nbsp;<span th:text="#{blog.since.modified}">since modified</span>
+          <br/><span th:text="#{blog.comments2}">Comments:</span>&nbsp;<span th:text="${blog.commentsPublished}">10</span>&nbsp;<span th:text="#{blog.since.published}">since published;</span>
+                                                                 &nbsp;<span th:text="${blog.commentsModified}">7</span>&nbsp;<span th:text="#{blog.since.modified}">since modified</span></td>
+       </tr>
+    </table>
+    <div th:if="${blog.editable}" align="center" >
+      <form action="#" th:action="@{/user/blogedit}" method="post">
+        <input type="hidden" name="id" th:value="${blog.id}" />
+        <button type="submit" name="edit" class="darkred" th:text="#{blog.edit}">Edit</button>    
+      </form>
+    </div>
+    <div th:if="${comments.size() > 0}" class="listtable">
+    <br/>
+      <table>
+        <tbody>
+          <tr th:each="c : ${comments}" th:class="${cStat.even}?'pale-blue':'pale-green'">
+            <td><i><span th:text="${c.createdDateString}">2013-02-23</span>&nbsp;&nbsp;<b><span th:text="${c.userName}">Nick Samoylov</span></b></i>
+                <br/><span th:text="${c.title}" style="color:#c60;font:normal normal 120% Georgia, Serif;">Title</span>
+                <br/><span th:text="${c.text}">Text</span>
+		        <span th:each="ce : ${c.edits}">
+		          <br/><i><span th:text="${ce.createdDateString}">2013-02-23</span></i>
+		          <br/><span th:text="${ce.text}">Text</span>
+		        </span>
+	   <div th:if="${c.editable}" class="listtable">
+       <table  style="border: none; border-bottom: none; border-bottom: none; border-collapse: collapse;">
+        <tbody>
+        <tr th:class="${cStat.even}?'pale-blue':'pale-green'" align="right" style="border-bottom: none;">
+          <td style="font:normal normal 78% 'Trebuchet MS', Trebuchet, Arial, Verdana, Sans-serif;border-left: none; border-right: none;">
+                 <span th:text="#{blog.found}">Found:</span>&nbsp;<span th:text="${c.foundPublished}">10</span>&nbsp;<span th:text="#{blog.since.published}">since published;</span>
+                                                            &nbsp;<span th:text="${c.foundModified}">7</span>&nbsp;<span th:text="#{blog.since.modified}">since modified</span>
+          <br/><span th:text="#{blog.viewed}">Viewed:</span>&nbsp;<span th:text="${c.viewedPublished}">10</span>&nbsp;<span th:text="#{blog.since.published}">since published;</span>
+                                                            &nbsp;<span th:text="${c.viewedModified}">7</span>&nbsp;<span th:text="#{blog.since.modified}">since modified</span>
+          </td></tr>
+        </tbody>
+       </table>
+       </div>
+			    <div th:if="${c.editable}" align="center" >
+                   <form action="#" th:action="@{/user/blogcommentedit}" method="post">
+                      <input type="hidden" name="id" th:value="${c.id}" />
+                      <button type="submit" name="edit" class="darkred" th:text="#{blog.comment.edit}">Edit</button>    
+                   </form>
+			    </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br/>
+    <h3 sec:authorize="isAnonymous()" th:text="#{blog.comment.registered.only}" align="center" class="darkred">Only registered users can add comments</h3>
+    <span sec:authorize="!isAnonymous()">
+     <form action="#" th:action="@{/user/blogcommentsave}" th:object="${comment}" method="post">
+       <input type="hidden" name="blogId" th:value="${blog.id}" />
+       <div class="listtable">
+       <h3 th:text="#{blog.comment.add}">New comment</h3>
+       <table>
+         <tbody>
+          <tr class="pale-blue">
+            <td th:text="#{blog.comment.coltitle}">Title</td>
+            <td><input type="text" th:field="*{title}" size="80" MAXLENGTH="80"/>
+                <span class="darkred" th:text="${#fields.hasErrors('title')}? ${#fields.errors('title')[0]}">Error</span>
+                <span class="darkred" th:text="${!#fields.hasErrors('title') &amp;&amp; comment.titleEmpty}? #{required}">required</span>                
+            </td>
+          </tr>
+          <tr class="pale-green">
+            <td colspan="2">
+              <textarea rows="11" cols="100" th:field="*{text}" maxlength="1100"></textarea><br/>
+              <span class="darkred" th:text="${error!=null}? ${error}">Error</span>
+              <span class="darkred" th:text="${error==null &amp;&amp; comment.textEmpty}? #{required}">required</span>
+            </td>
+          </tr>
+         </tbody>
+       </table>
+      </div>
+      <br/>
+      <div align="center" >
+        <button type="submit" name="save" class="darkred" th:text="#{nav.save}">Save</button>    
+      </div>
+     </form>
+     <div th:if="${iswriter}" th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+    </span>
+ </body>
+</html>

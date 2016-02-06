@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!-- testresults -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+    <div class="listtable">
+      <h2 th:text="#{testresults.tablename}">Test results</h2>
+      <div th:if="${deleteUri}" th:include="fragment/common :: [//div[@id='confirmdelete']]"></div>
+      <table>
+        <thead>
+          <tr>
+            <th th:text="#{testresults.colname}">Test run</th>
+            <th th:text="#{testresults.colstart}">Started</th>
+            <th th:text="#{testresults.colstatus}">Completed</th>
+            <th th:text="#{testresults.coltestgroups}">Test groups</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="t : ${tests}" th:class="${tStat.even}?'pale-blue':'pale-green'">
+            <td><a th:href="@{/test/testresult(qt=${t.questionsToken})}"><span th:text="${t.name}">My Test</span></a></td>
+            <td align="center" th:text="${t.createdDateString}">Created date</td>
+            <td align="center" th:text="${t.completeness}">Completeness</td>
+            <td th:with="testgroupstest=${testgroupsmap.get(t.id)}">
+               <span th:if="${testgroupstest.size()==0}" th:text="#{testgroups.no}">No groups</span>
+               <div th:if="${testgroupstest.size()>0}" class="listtable">
+               <table style="border: none; border-bottom: none; border-collapse: collapse;">
+                <tr th:each="tg : ${testgroupstest}" style="border-bottom: none;">
+                 <td align="left" style="border-left: none; border-right: none;">                    
+                    <a th:href="@{/test/testgroupresult(tgId=${tg.id},qt=${t.questionsToken})}"><span th:text="${tg.name}">My Test group 1</span></a>
+                    
+                 </td>
+                 <td style="border-left: none; border-right: none;"></td>
+                 <td align="center" style="border-left: none; border-right: none;">
+	                <span th:if="${t.textShort}">
+	                  <a th:href="@{/test/testgroupresulttext(tgId=${tg.id},qt=${t.questionsToken})}"><span th:text="#{testresults.text.short}">My Test</span></a>
+	                </span>
+	                <span th:unless="${t.textShort}">
+	                  <a th:href="@{/test/testgroupresultfileview(tgId=${tg.id},qt=${t.questionsToken})}"><span th:text="${tg.text}">View file</span></a>
+	                </span>
+                 </td>
+                 <td align="center" style="border-left: none; border-right: none;">
+	                  <a th:href="@{/test/testresultcomments(tgId=${tg.id},qt=${t.questionsToken})}"><span th:text="#{testresults.comments}">My Test</span></a>
+                 </td>
+                </tr>
+               </table>
+               </div>
+            </td>
+          </tr>
+          <tr th:if="${tests==null || tests.size()==0}">
+            <td colspan="5"><span th:text="#{testresults.no}">No tests started</span></td>
+          </tr>
+          <tr th:remove="all" class="pale-blue">
+            <td>Another Group</td>
+            <td>Inactive</td>
+            <td>-</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

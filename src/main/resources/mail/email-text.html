@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:remove="all">Template for HTML email (simple)</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+       <p th:text="${text1}"/>
+       <span  th:if="${text}">
+          <b><p th:text="${text}"/></b>
+       </span>
+       <p th:if="${imageName}"><img th:src="'cid:' + ${imageName}" /></p>
+       <p th:if="${text2}" th:text="${text2}"/>
+       <p th:if="${registrationLink}">
+          <p><span th:text="#{email.reg}">To finish registration, please</span>&nbsp;
+             <a href="" th:href="${registrationLink}"><span th:text="#{email.clickhere}">click here</span></a>.</p>
+       </p>
+       <p th:if="${emailChangeLink}">
+          <p><span th:text="#{email.change.login}">To finish registration, please</span>&nbsp;
+             <a href="" th:href="${emailChangeLink}"><span th:text="#{email.clickhere}">click here</span></a>.</p>
+       </p>
+       <p th:if="${emailRequestContactLink}">
+          <p><span th:text="#{email.request.answer}">To answer the message, please</span>&nbsp;
+             <a href="" th:href="${emailRequestContactLink}"><span th:text="#{email.clickhere}">click here</span></a>.</p>
+       </p>
+       <p th:if="${questions}">
+          <span th:each="q : ${questions.questions}">
+            <span th:text="${q}">Question</span><br/>
+          </span>
+          <p><span th:text="#{email.answerquestions}">To answer the questions, please</span>&nbsp;
+             <a href="" th:href="${questions.getLinkToQuestions(#locale.language)}"><span th:text="#{email.clickhere}">click here</span></a>.</p>
+       </p>
+       <p th:text="${text3}"/>
+       <p th:text="${text4}"/>
+       <p th:if="${testers}">
+         <span th:text="#{email.same.sent.to(${testgroupname})}">Sent to</span><br/>
+         <span th:each="t : ${testers}">
+            &nbsp;&nbsp;&nbsp;<span th:text="${t}">Tester Leo Tolstoy</span><br/>
+         </span> 
+       </p>
+   </body>
+</html>
+

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!-- testedit -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+   <form action="#" th:action="@{/test/testsave}" th:object="${test}" method="post">
+    <input type="hidden" name="id" th:value="*{id}" />
+    <input type="hidden" name="writerId" th:value="*{writerId}" />
+    <input type="hidden" name="r" th:value="${r}" />
+    <div class="listtable">
+      <h2 th:text="${test.id}?(#{test.tablename}+' '+${test.name}):#{test.new}">Test My First Book</h2>
+      <table>
+        <tbody>
+          <tr class="${test.id}==null?pale-blue">
+            <td th:text="#{test.colname}">Test name</td>
+            <td><input type="text" th:field="*{name}" size="40" MAXLENGTH="64"/>
+                <span class="darkred" th:text="${#fields.hasErrors('name')}? ${#fields.errors('name')[0]}">Error</span>
+                <span class="darkred" th:text="${!#fields.hasErrors('name') &amp;&amp; (test.name==null || test.name.length()==0)}? #{required}">required</span>                
+            </td>
+          </tr>
+          <tr th:if="${test.id}" class="pale-blue">
+            <td th:text="#{test.colstatus}">Test status</td>
+            <td th:text="#{${test.status}}">Active</td>
+          </tr>
+          <tr class="pale-green">
+            <td th:text="#{test.coltextlength}">Test text length</td>
+            <td>
+               <select th:field="*{testTextLength}">
+                   <option th:each="v : *{testTextLengthOptions}" th:text="#{${v}}" th:value="${v}" >option</option>
+               </select>
+               <span th:if="${deletetexts}" class="darkred">
+				   <span th:text="#{test.text.length.warn(#{texts},${deletetexts})}">The texts assigned to the groups Group 1 of this test will be removed.</span>
+				   <span th:text="#{confirmdelete(#{thesetexts})}">Please confirm</span>
+				   <a th:text="#{confirmyes}" href="" th:href="@{/test/testgrouptextdel(testId=${test.id},testTextLength=${test.testTextLength},confirm='yes',r=${r})}">Yes</a> | <a th:text="#{confirmno}" href="" th:href="@{${resubmitUri}}">No</a>
+               </span>
+               <span th:if="${deleteimages}" class="darkred">
+				   <span th:text="#{test.text.length.warn(#{images},${deleteimages})}">The images assigned to the groups Group 1 of this test will be removed.</span>
+				   <span th:text="#{confirmdelete(#{theseimages})}">Please confirm</span>
+				   <a th:text="#{confirmyes}" href="" th:href="@{/test/testgrouptextdel(testId=${test.id},testTextLength=${test.testTextLength},confirm='yes',r=${r})}">Yes</a> | <a th:text="#{confirmno}" href="" th:href="@{${resubmitUri}}">No</a>
+               </span>
+            </td>
+           </tr>
+          <tr class="pale-blue" >
+            <td colspan="2" th:text="#{test.email.below}">The following email will be sent to all groups listed below, when this test is launched:</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <span th:if="${test.emailTextEmpty}" th:text="#{test.emailtext.no}"></span>
+              <span th:if="${!test.emailTextEmpty}" th:text="${test.emailText}"></span>
+            </td>
+           </tr>
+        </tbody>
+      </table>
+      <br/>
+      <span class="darkred" th:if="${test.testgroupsId==null || test.testgroupsId.size()==0}" th:text="#{methodInvocation.test.testgroupsId}">required</span>                
+      <table>
+        <thead>
+          <tr>
+            <th th:text="#{nav.select}">Select</th>
+            <th th:text="#{test.coltestgroup}">Test group name</th>
+            <th th:text="#{testgroup.colsize}">Group size</th>
+            <th th:text="#{testgroup.coltests}">Tests it participates</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="t : ${testgroupsall}" th:class="${tStat.even}?'pale-blue':'pale-green'">
+            <td><input type="checkbox" th:field="*{testgroupsId}" th:value="${t.id}"/></td>
+            <td th:text="${t.name}">Group 21</td>
+            <td th:text="${t.size}">3</td>
+            <td>
+              <span th:if="${testsmap.get(t.id).size()==0}" th:text="#{tests.no}">No tests</span>
+              <span th:each="test : ${testsmap.get(t.id)}"><span th:text="${test.name}">My Test 1</span><br/></span>
+            </td>                        
+          </tr>
+          <tr th:if="${testgroupsall==null || testgroupsall.size()==0}">
+            <td colspan="4"><span th:text="#{testgroups.no}">No test groups</span></td>
+          </tr>
+          <tr th:remove="all" class="pale-blue">
+            <td>Select</td>
+            <td>Test group 23</td>
+            <td>Group size</td>
+            <td>Tests</td>
+          </tr>
+        </tbody>
+      </table>    
+    </div>
+    <br/>
+    <div align="center" >
+        <button type="submit" name="save" class="darkred" th:text="#{nav.save}">Save</button>    
+    </div>
+   </form>
+    <div th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

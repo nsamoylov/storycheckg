@@ -1,0 +1,5 @@
+# database properties
+app.jdbc.driverClassName=org.postgresql.Driver
+app.jdbc.url=jdbc:postgresql://localhost:5432/postgres
+app.jdbc.username=postgres
+app.jdbc.password=postgres

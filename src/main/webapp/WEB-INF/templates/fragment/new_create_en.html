@@ -1,0 +1,13 @@
+        <div>
+        <p>
+        <span th:if="${createtester}">
+          <br/><a href="" th:href="@{/test/testers}">Enter email addresses</a> of your testers - those, whose opinion you value.
+        </span>
+        <span th:if="${createtestgroup}">
+          <br/><a href="" th:href="@{/test/testgroupadd}">Create test groups</a> of testers.
+        </span>
+        <span th:if="${createtest}">
+          <br/><a href="" th:href="@{/test/testadd}">Create test</a> for your books, ideas, pictures.
+        </span>
+        </p>
+        </div>

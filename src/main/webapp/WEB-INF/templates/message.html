@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!-- message.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+   <span align="center">
+     <span th:if="${emailtestersmap}">
+	   <form action="#" th:action="@{/test/testrun}" method="post">
+            <input type="hidden" name="r" th:value="${r}" />         
+            <input type="hidden" name="id" th:value="${id}" />
+	    <div align="center" >
+	        <button type="submit" name="confirm" value="testrun" class="darkred" th:text="#{nav.send}">Send</button>&nbsp;&nbsp;&nbsp;    
+	        <button type="submit" name="confirm" value="dontrun" class="darkred" th:text="#{nav.send.not}">Do not send</button>    
+	    </div>
+	   </form>       
+  	   <h3 class="darkred" th:text="#{email.sent.to.groups(${email})}">Email will be sent to the following people</h3>
+       <div class="listtable">
+  	     <table>
+	        <thead>
+	          <tr>
+	            <th th:text="#{testgroup.colname}">Name</th>
+	            <th th:text="#{testgroup.colmember}">Group member</th>
+	          </tr>
+	        </thead>
+  	       <tbody>
+  	        <tr th:each="t : ${emailtestersmap.keySet()}" th:class="${tStat.even}?'pale-blue':'pale-green'">
+  	          <td th:text="${t}">Test group 1:</td>
+  	          <td style="text-align: left;"><span th:each="ts : ${emailtestersmap.get(t)}"><span th:text="${ts}">Tester Leo Tolstoy</span><br/></span></td>
+  	        </tr>
+  	       </tbody>
+  	     </table>
+       </div>  	     
+     </span>
+     <span th:if="${confirmdeleteroles}">
+	   <form action="#" th:action="@{/user/userdeleteroles}" method="post">
+	    <input type="hidden" name="roles" th:value="${roles}" />
+	    <div align="center" >
+	        <button type="submit" name="confirm" value="delete" class="darkred" th:text="#{nav.delete}">Delete</button>&nbsp;&nbsp;&nbsp;    
+	        <button type="submit" name="confirm" value="dontdelete" class="darkred" th:text="#{nav.delete.not}">Do not delete</button>    
+	    </div>
+	   </form>       
+     </span>
+     <span th:if="${confirmdelete}">
+	   <form action="#" th:action="@{/user/userdelete}" method="post">
+	    <div align="center" >
+	        <button type="submit" name="confirm" value="userdelete" class="darkred" th:text="#{nav.delete}">Delete</button>&nbsp;&nbsp;&nbsp;    
+	        <button type="submit" name="confirm" value="dontdelete" class="darkred" th:text="#{nav.delete.not}">Do not delete</button>    
+	    </div>
+	   </form>       
+     </span>
+     <span th:if="${becometester}">
+	     <h3 class="darkred" th:text="#{msg.thankyou}">Thank you!</h3>
+         <h3 class="darkred"><span th:text="#{becometester1}">You can register as a tester</span>
+             <a href="" th:href="#{registrationlink}"><span th:text="#{here}">here</span></a>&nbsp;<span th:text="#{becometester2}">and receive requests from other writers too. After our services become paid, we will find a way to reward you.</span></h3>	     
+     </span>
+     <h3 th:if="${message}" class="darkred" th:text="${message}">The e-mail has been sent, please give me some time to respond</h3>
+     <p><a href="index.html" th:href="@{/index}"><span th:text="${returnhome}">Back to home page</span></a></p>
+   </span>
+ </body>
+</html>

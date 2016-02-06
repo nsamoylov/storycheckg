@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!-- itesters -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+   <form action="#" th:action="@{/test/itestersadd}" th:object="${testgroup}" method="post">
+    <input type="hidden" name="writerId" th:value="*{writerId}" />
+    <div class="listtable">
+      <h2 th:text="#{itesters.tablename}">Independent testers</h2>
+      <table>
+        <thead>
+          <tr>
+            <th th:text="#{nav.select}">Select</th>
+            <th th:text="#{testgroup.members.name}">Name</th>
+            <th th:text="#{user.lang}">Language</th>
+            <th th:text="#{itester.requests}">Tester requests</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="t : ${testersall}" th:class="${tStat.even}?'pale-blue':'pale-green'">
+            <td><input type="checkbox" th:field="*{testersId}" th:value="${t.id}"/></td>
+            <td th:text="${t.firstnameRead}+' '+${t.lastnameRead}">Nick Samoylov</td>
+            <td th:text="#{${t.language}}">English</td>
+            <td>
+              <span th:if="${testerrequestsmap.get(t.id).size()== 0}"><span th:text="#{requestsfind.no}"></span></span>
+              <span th:each="req : ${testerrequestsmap.get(t.id)}"><a th:href="@{/test/itesterrequest(id=${req.id})}"><span th:text="${req.title}">Tester's request</span></a><br/></span>
+            </td>                        
+          </tr>
+          <tr th:if="${testersall==null || testersall.size()==0}">
+            <td colspan="4"><span th:text="${notestersmsg}">No testers</span></td>
+          </tr>
+          <tr th:remove="all" class="pale-blue">
+            <td>Select</td>
+            <td>Jack Blow</td>
+            <td>I can test</td>
+          </tr>
+        </tbody>
+      </table>    
+    </div>
+    <br/>
+    <div align="center" >
+        <button type="submit" name="save" class="darkred" th:text="#{nav.save}">Save</button>    
+    </div>
+   </form>
+    <div th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

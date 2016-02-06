@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!-- tests -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+    <h3 th:if="${isnew}" align="center">
+      <span th:include="#{new.create} :: [//div]" class="darkred">Create testers/groups/tests</span>
+    </h3>
+    <div class="listtable">
+      <h2 th:text="#{tests.tablename}">All your tests</h2>
+      <table>
+        <thead>
+          <tr>
+            <th th:text="#{test.colname}">Name</th>
+            <th th:text="#{tests.coltext}">To be tested</th>
+            <th th:text="#{test.colemail}">Email text</th>
+            <th th:text="#{test.coltestgroups}">Test Groups</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="t : ${tests}" th:class="${tStat.even}?'pale-blue':'pale-green'">
+            <td><a th:href="@{/test/test(id=${t.id})}"><span th:text="${t.name}">My Test</span></a></td>
+            <td th:text="#{${t.testTextLength}}">Short/Long/Image</td>
+            <td align="left">
+              <a th:href="@{/test/testemailedit(testId=${t.id},r='tests')}">
+                <span th:if="${t.emailTextEmpty}" th:text="#{nav.add.emailtext}" style="text-decoration: underline;color:maroon;" class="darkred">Add email</span>
+                <span th:unless="${t.emailTextEmpty}" th:text="#{nav.edit.emailtext}">Edit email</span>
+              </a>
+            </td>
+            <td th:with="testgroupstest=${testgroupsmap.get(t.id)}">
+               <span th:if="${testgroupstest.size()==0}" th:text="#{testgroups.no}">No groups</span>
+               <div th:if="${testgroupstest.size()>0}" class="listtable">
+               <table style="border: none; border-bottom: none; border-collapse: collapse;">
+                <tr th:each="tg : ${testgroupstest}" style="border-bottom: none;">
+                 <td align="left" style="border-left: none; border-right: none;">
+                    <a th:href="@{/test/testgrouptext(id=${tg.id},testId=${t.id})}"><span th:text="${tg.name}">My Test group 1</span></a>
+                 </td>
+                 <td style="border-left: none; border-right: none;"></td>
+                 <td align="center" style="border-left: none; border-right: none;">
+                   <a th:href="@{/test/testgrouptextedit(id=${tg.id},testId=${t.id},r='tests')}">
+                     <span th:if="${tg.textEmpty}" th:text="${t.image}?#{nav.add.image}:#{nav.add.text}" style="text-decoration: underline;color:maroon;" class="darkred">Add text</span>
+                     <span th:unless="${tg.textEmpty}" th:text="${t.image}?#{nav.edit.image}:#{nav.edit.text}">Edit text</span>
+                   </a>
+                 </td>
+                </tr>
+               </table>
+               </div>
+            </td>
+          </tr>
+          <tr th:if="${tests==null || tests.size()==0}">
+            <td colspan="4"><span th:text="#{tests.no}">No tests</span></td>
+          </tr>
+          <tr th:remove="all" class="pale-blue">
+            <td>Test 1</td>
+            <td>To be tested</td>
+            <td>Email text</td>
+            <td>Test Groups</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br/>
+    <div align="center">
+      <form action="#" th:action="@{/test/testadd}" method="get"> 
+        <button type="submit" class="darkred" th:text="#{tests.add}">Add</button>
+      </form>    
+    </div>
+    <div th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

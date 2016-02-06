@@ -1,0 +1,18 @@
+<div>
+  <form action="#" th:action="@{/test/sampleemail}" method="post">    
+    <h3 align="center">
+      <span th:include="#{intro.samplepages} :: [//div]" class="darkred">See sample pages</span><br/>
+      <span th:text="#{intro.the.idea}" class="darkred">Just to get an idea,</span>&nbsp;
+      <span th:text="#{intro.your.email}" class="darkred">Enter your email address:</span>&nbsp;&nbsp;&nbsp;
+      <input name="email" type="email" MAXLENGTH="256"/>    
+              <span class="darkred" th:if="${error}" th:text="#{${error}}">Error</span>
+    </h3>
+    <div align="center" >
+        <button type="submit" value="usersave" th:text="#{intro.get.sampleemail}" class="darkred">Get sample email</button>    
+    </div>
+  </form>
+	   <div class="hello" th:text="#{intro.hello}">Hello!</div>
+       <div class="pale-green" th:include="#{intro.description} :: [//div]">Russian</div>
+       <h4 align="left" th:text="#{intro.luck}">Good luck!</h4>  
+       <h4 align="right" th:text="#{nicks}">Nick Samoylov</h4>
+</div>

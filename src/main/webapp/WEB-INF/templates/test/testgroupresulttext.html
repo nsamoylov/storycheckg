@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!-- testgroupresulttext -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+    <div class="listtable">
+      <h2 th:text="#{test.tablename}+' '+${test.name}+': '+${test.createdDateString}+' - '+${test.completeness}">Test My Book: 23-Apr-2013 - 50%</h2>
+      <h3 th:text="#{testgroup.tablename}+' '+${testgroup.name}+' - '+${testgroup.completeness}">Test group My Translation</h3>
+      <table>
+        <thead>
+          <tr>
+            <th th:text="#{test.text.below.was(${test.createdDateString})}">This text was sent to all group members listed below on 23-Apr-2013, when this test is launched:</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td th:text="${testgroup.text}">Tested text</td>
+          </tr>
+        </tbody>
+      </table>
+      <br/>
+      <table>
+        <thead>
+          <tr>
+            <th th:text="#{tester.colfirst}">First Name</th>
+            <th th:text="#{tester.collast}">Last Name</th>
+            <th th:text="#{tester.colemail}">Email</th>
+            <th th:text="#{user.lang}">Language</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="t : ${testerstestgroup}" th:class="${tStat.even}?'pale-blue':'pale-green'">
+            <td th:text="${t.firstnameRead}">Nick</td>
+            <td th:text="${t.lastnameRead}">Samoylov</td>
+            <td th:text="${t.email}">emailbox@home.com</td>
+            <td th:text="#{${t.language}}">English</td>
+          </tr>
+          <tr th:if="${testerstestgroup==null || testerstestgroup.size()==0}">
+            <td colspan="4"><span th:text="#{testers.no}">No testers</span></td>
+          </tr>
+          <tr th:remove="all" class="pale-blue">
+            <td>Jack</td>
+            <td>Blow</td>
+            <td>whatever@bell.com</td>
+            <td>English</td>
+          </tr>
+        </tbody>
+      </table>
+      <br/>
+      <table>
+        <thead>
+          <tr>
+            <th th:text="#{testresults.comments}">Comments</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:if="${comments.size()>0}" th:each="s : ${comments}" th:class="${sStat.even}?'pale-blue':'pale-green'">
+            <td th:text="${s}">Comments</td>
+          </tr>
+          <tr th:if="${comments.size()==0}">
+            <td colspan="5"><span th:text="#{testresults.nocomments}">No tests started</span></td>
+          </tr>
+        </tbody>
+      </table>    
+    </div>
+    <div th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

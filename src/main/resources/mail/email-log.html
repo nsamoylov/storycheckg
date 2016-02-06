@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:remove="all">Template for HTML email with log</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+      <table>
+        <tr>
+          <td><p th:text="${user}"/></td>
+        </tr>
+       </table>        
+       <p th:text="${text}"/>
+<!-- 
+       <p>
+         <img src="Nick50.jpg" th:src="'cid:' + ${nick}" />
+       </p>
+ -->
+    </body>
+</html>

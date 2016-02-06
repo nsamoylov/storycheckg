@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!-- tester -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div th:include="fragment/common :: [//div[@id='logo']]"></div>
+    <div class="listtable">
+      <h2 th:text="${tester.firstnameRead+' '+tester.lastnameRead}">Nick Samoylov</h2>
+      <div th:if="${deleteUri}" th:include="fragment/common :: [//div[@id='confirmdelete']]"></div>
+      <table>
+        <tbody>
+          <tr class="pale-blue">
+            <td th:text="#{tester.colemail}">Email</td>
+            <td th:text="${tester.email}">whatever@hotmail.com</td>
+          </tr>
+          <tr class="pale-green">
+            <td th:text="#{user.lang}">Language</td>
+            <td th:text="#{${tester.language}}">English</td>
+          </tr>
+          <tr class="pale-blue">
+            <td th:text="#{tester.rowgroups}">Test groups</td>
+            <td>
+              <span th:if="${testgroupstester.size()== 0}"><span th:text="#{testgroups.no.such}"></span></span>
+              <span th:each="t : ${testgroupstester}">
+                 <a th:href="@{/test/testgroup(id=${t.id})}"><span th:text="${t.name}">My Test group 1</span></a><br/>
+              </span>
+            </td>                        
+          </tr>
+          <tr class="pale-green">
+            <td th:text="#{tester.rowtests}">Tests</td>
+            <td>
+              <span th:if="${teststester.size()== 0}"><span th:text="#{tests.no.such}"></span></span>
+              <span th:each="t : ${teststester}">
+                 <a th:href="@{/test/test(id=${t.id})}"><span th:text="${t.name}">My Test 1</span></a><br/>
+              </span>
+            </td>                        
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br/>
+    <div align="center" >
+      <form action="#" th:action="@{/test/testeredit}" method="post"> 
+            <input type="hidden" name="id" th:value="${tester.id}" />
+        <button type="submit" name="buttonValue" value="testeredit" class="darkred" th:text="#{nav.edit}">Edit</button>
+        <button th:unless="${deleteUri}" type="submit" name="buttonValue" value="testerdel" class="darkred" th:text="#{nav.delete}">Send</button>    
+      </form>    
+    </div>
+    <div th:include="fragment/common :: [//div[@id='test_footer']]"></div>
+  </body>
+</html>

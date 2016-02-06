@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!-- error.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: [//head]" />
+ <body>
+   <div>
+  <table>
+    <tr>
+    <td width="50%">
+        <img src="../../images/cheshire01.gif" alt="Storycheck logo" title="Storycheck logo" 
+                         th:src="#{application.logo}" th:alt-title="#{application.title}"/>     
+    </td>
+    <td align="left" width="50%">
+	   <p th:text="#{error.unfortunate}">That is unfortunate...</p> 
+	   <p><span th:text="#{error.assitance}">If you need an assistance</span>, 
+	   <a href="send.html" th:href="@{/send.html}"><span th:text="#{error.sendmemessage}">send me a message</span></a>.</p>
+	   <p align="right"><span th:text="#{nick}">Nick</span></p> 
+	   <p><a href="index.html" th:href="@{/index}"><span th:text="#{returnhome}">Back to home page</span></a></p>
+    </td>
+    </tr>
+  </table>       
+</div>
+
+   
+ </body>
+</html>
